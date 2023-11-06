@@ -1,0 +1,6 @@
+virt_env
+.env
+sample_tracks.csv
+*.pyc
+__pycache__
+.idea
