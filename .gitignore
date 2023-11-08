@@ -1,6 +1,7 @@
 virt_env
 .env
-sample_tracks.csv
+*.csv
 *.pyc
 __pycache__
 .idea
+shithole.py
