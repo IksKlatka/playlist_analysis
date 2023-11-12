@@ -59,7 +59,7 @@ def objects_to_dataframes(objects) -> pd.DataFrame:
 
 
 def save_to_file(dataframe: pd.DataFrame, name: str):
-    dataframe.to_csv(name+".csv", sep=';')
+    dataframe.to_csv("playlists/" +name+".csv", sep=';')
 
 
 async def extract_playlist_id(url):

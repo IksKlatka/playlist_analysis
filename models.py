@@ -40,6 +40,9 @@ class Track:
     duration: int # in ms
     valence: float # from 0 to 1
     energy: float
+    tempo: float
+    loudness: float
+    danceability: float
     genres: list[str]
 
 

@@ -1,5 +1,6 @@
 virt_env
 .env
+/playlists
 *.csv
 *.pyc
 __pycache__
