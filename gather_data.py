@@ -25,29 +25,38 @@ async def get_user_info(user_id: str) -> User:
 async def get_playlist_info(playlist_id: str):
     async with aiohttp.ClientSession(headers=headers) as session:
         async with session.get(base_url+f'/v1/playlists/{playlist_id}') as response:
-            data = await response.json()
-
-            del data['images']
-            for d in data['tracks']['items']:
-                del d['track']['available_markets']
-                del d['track']['album']['available_markets']
-                del d['track']['album']['images']
-
-            return data
+            try:
+                data = await additional_functions.validate_response(response)
+                # del data['images']
+                # for d in data['tracks']['items']:
+                #     del d['track']['available_markets']
+                #     del d['track']['album']['available_markets']
+                #     del d['track']['album']['images']
+                return data
+            except (TypeError, ValueError) as error:
+                print(f"Error occurred while fetching track features: {error}")
+                return
 
 async def get_track_features(track_id: str) -> dict:
     async with aiohttp.ClientSession(headers=headers) as session:
         async with session.get(base_url+f'/v1/audio-features/{track_id}') as response:
-            data = await response.json()
-            return data
+            try:
+                data = await additional_functions.validate_response(response)
+                return data
+            except (TypeError, ValueError) as error:
+                print(f"Error occurred while fetching track features: {error}")
+                return
 
 # note : hardly ever there are genres
 async def get_album_genres(album_id: str):
     async with aiohttp.ClientSession(headers=headers) as session:
         async with session.get(base_url + f'/v1/albums/{album_id}') as response:
-            # note: in playlistItem object ["tracks"]["items"]['track']["album"]["id"]
-            data = await response.json()
-            return data['genres']
+            try:
+                data = await additional_functions.validate_response(response)
+                return data
+            except (TypeError, ValueError) as error:
+                print(f"Error occurred while fetching track features: {error}")
+                return
 
 
 async def get_playlist_items(playlist_id: str, offset: int = 0):
@@ -57,6 +66,7 @@ async def get_playlist_items(playlist_id: str, offset: int = 0):
     all_songs = []
     async def fetch_track_data(song):
         audio_data = await get_track_features(song['track']['id'])
+        genre_data = await get_album_genres(song['track']['album']['id'])
 
         track = Track(id=song['track']['id'],
                       name=song['track']['name'],
@@ -66,7 +76,8 @@ async def get_playlist_items(playlist_id: str, offset: int = 0):
                       duration=song['track']['duration_ms'],
                       valence = audio_data['valence'],
                       energy =  audio_data['energy'],
-                      genre=await get_album_genres(song['track']['album']['id']))
+                      genres= genre_data['genres'])
+
         return track
 
     def playlist_info_to_object(playlist: dict, total_duration: int) -> Playlist:
@@ -103,7 +114,7 @@ async def get_playlist_items(playlist_id: str, offset: int = 0):
 async def _main():
 
     user_id = 'iga.klatka'
-    playlist_id = '3hq8qM0t1YdggfEbEdntjn'
+    playlist_id = '3VrrnKPss90ctQ4LHiVM0l'
 
     # user = await get_user_info(user_id)
     # user_df = pd.DataFrame(user)
