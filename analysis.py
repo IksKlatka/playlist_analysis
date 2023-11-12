@@ -44,6 +44,7 @@ def get_track_features_data(dataframe: pd.DataFrame):
         else:
             return "high"
 
+
     #note: energy
     print("Tracks energy insights.")
     mean_energy, higher_energy, sorted_energy = get_common_stat_data(data=dataframe, column='energy')
@@ -53,6 +54,7 @@ def get_track_features_data(dataframe: pd.DataFrame):
     The most energetic song in playlist is: {sorted_energy.iloc[0]['name']} by {sorted_energy.iloc[0]['artist']} with energy = {sorted_energy.iloc[0]['energy']}
     The least energetic song in playlist is: {sorted_energy.iloc[-1]['name']} by {sorted_energy.iloc[-1]['artist']} with energy = {sorted_energy.iloc[-1]['energy']}
     """)
+    first_24 = sorted_df.head(24)
 
     # note: valence
     print("Tracks mood insights.")
@@ -152,7 +154,7 @@ def get_avg_track_duration(dataframe: pd.DataFrame):
 
     pie_duration(sorted_duration)
 
-# done: done: done:
+#done: done: done:
 def get_common_release_years_of_tracks(dataframe: pd.DataFrame):
     print("Tracks albums release years insights.\n")
 
@@ -200,7 +202,6 @@ def get_top_playlist_artists_and_words(dataframe: pd.DataFrame):
             else:
                 words_count[i] = 1
 
-
     print(f"""
     There are {total_artists} distinct and {artists_duplicates} duplicated artists on the playlist.
     Most common artist, {artist[0]}, takes about {((artist_count[artist[0]]*100)/len(dataframe)):.1f}% of all 
@@ -213,17 +214,13 @@ def get_top_playlist_artists_and_words(dataframe: pd.DataFrame):
 
     plot_artists(artists=artist, counts=count)
 
+
 async def _main():
     load_dotenv()
     user =  os.getenv("USER_ID", None)
     playlist_id = os.getenv("PLAYLIST_ID", None)
 
     track_df = pd.DataFrame(pd.read_csv("playlists/books.mp3_playlist.csv", sep=";", index_col=0))
-    # get_avg_playlist_energy_valence(track_df)
-    # get_top_playlist_artists_and_words(track_df)
-    # get_avg_track_duration(track_df)
-    # get_common_release_years_of_tracks(track_df)
-    get_top_playlist_artists_and_words(track_df)
 
 if __name__ == '__main__':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())

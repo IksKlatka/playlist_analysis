@@ -71,6 +71,7 @@ async def get_playlist_items(playlist_id: str, offset: int = 0):
                       valence = audio_data['valence'],
                       energy =  audio_data['energy'],
                       tempo = audio_data['tempo'],
+                      loudness= audio_data['loudness']
                       danceability = audio_data['danceability'],
                       genres= genre_data['genres']
                       )
@@ -86,11 +87,11 @@ async def get_playlist_items(playlist_id: str, offset: int = 0):
             async with session.get(
                     base_url + f'/v1/playlists/{playlist_id}/tracks?offset={offset}&limit={limit}') as response:
                 data = await response.json()
+                print("Fetching begun.")
                 for s, song in enumerate(data['items']):
                     track = await fetch_track_data(song)
-                    if s % 100 == 0:
-                        print(f"Fetched {s/len(data)*100:.1f}% of data.")
                     all_songs.append(track)
+
                 total_songs -= limit
                 offset += limit
 
