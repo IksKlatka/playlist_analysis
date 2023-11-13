@@ -22,6 +22,7 @@ def upgrade() -> None:
     op.execute(f"""
     CREATE TABLE IF NOT EXISTS const_tracks (
     id SERIAL PRIMARY KEY,
+    playlist_id VARCHAR(255),
     track_id VARCHAR(255) UNIQUE NOT NULL,
     name VARCHAR(255) NOT NULL,
     artist VARCHAR(255) NOT NULL,

@@ -11,6 +11,8 @@
 import pandas as pd
 from urllib.parse import urlparse, parse_qs
 
+import models
+
 
 async def validate_response(resp):
     if resp.status == 200:
@@ -57,9 +59,16 @@ def objects_to_dataframes(objects) -> pd.DataFrame:
     else:
         raise TypeError("The 'objects' argument should be a list of class instances.")
 
+def dataframe_to_objects(dataframe: pd.DataFrame) -> list[models.Track]:
+    all_tracks = []
+    for i in range(1,len(dataframe)):
+        all_tracks.append(models.Track(*dataframe.iloc[i]))
+
+    return all_tracks
+
 
 def save_to_file(dataframe: pd.DataFrame, name: str):
-    dataframe.to_csv("playlists/" +name+".csv", sep=';')
+    dataframe.to_csv("playlists/" +name+"_playlist.csv", sep=';')
 
 
 async def extract_playlist_id(url):

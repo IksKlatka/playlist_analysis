@@ -57,11 +57,7 @@ async def get_playlist_items(playlist_id: str, offset: int = 0):
     all_songs = []
     async def fetch_track_data(song):
         audio_data = await get_track_features(song['track']['id'])
-        if not audio_data:
-            return
         genre_data = await get_album_genres(song['track']['album']['id'])
-        if not genre_data:
-            return
         track = Track(id=song['track']['id'],
                       name=song['track']['name'],
                       artist=song['track']['artists'][0]['name'],
@@ -90,7 +86,9 @@ async def get_playlist_items(playlist_id: str, offset: int = 0):
                 data = await response.json()
                 print("Fetching begun.")
                 for s, song in enumerate(data['items']):
-                    track = await fetch_track_data(song)
+                    try:
+                        track = await fetch_track_data(song)
+                    except TypeError: continue
                     all_songs.append(track)
 
                 total_songs -= limit
