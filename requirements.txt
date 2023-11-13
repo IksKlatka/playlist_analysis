@@ -1,3 +1,5 @@
 python_dotenv
 aiohttp
 pandas
+asyncpg
+alembic

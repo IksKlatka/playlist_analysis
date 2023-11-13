@@ -15,7 +15,6 @@ def objects_to_dataframes(objects) -> pd.DataFrame:
 
 
 def get_common_stat_data(data: pd.DataFrame, column: str):
-    print(f"Tracks {column} insights.")
 
     mean = round(data[column].mean(), 3)
     higher = len(data.loc[data[column] >= mean])
@@ -54,7 +53,8 @@ def get_track_features_data(dataframe: pd.DataFrame):
     The most energetic song in playlist is: {sorted_energy.iloc[0]['name']} by {sorted_energy.iloc[0]['artist']} with energy = {sorted_energy.iloc[0]['energy']}
     The least energetic song in playlist is: {sorted_energy.iloc[-1]['name']} by {sorted_energy.iloc[-1]['artist']} with energy = {sorted_energy.iloc[-1]['energy']}
     """)
-    first_24 = sorted_df.head(24)
+
+    first_24 = sorted_energy.head(24)
 
     # note: valence
     print("Tracks mood insights.")
@@ -221,7 +221,7 @@ async def _main():
     playlist_id = os.getenv("PLAYLIST_ID", None)
 
     track_df = pd.DataFrame(pd.read_csv("playlists/books.mp3_playlist.csv", sep=";", index_col=0))
-
+    get_track_features_data(track_df)
 if __name__ == '__main__':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 

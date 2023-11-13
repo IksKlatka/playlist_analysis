@@ -1,7 +1,8 @@
 import datetime
 from dataclasses import dataclass
-from typing import List
+from typing import Optional
 
+# note: niepotrzebne
 @dataclass
 class User:
     """
@@ -12,7 +13,7 @@ class User:
     username: str
     pass
 
-
+# note: niepotrzebne
 @dataclass
 class Playlist:
     """
@@ -29,9 +30,6 @@ class Playlist:
 
 @dataclass
 class Track:
-    """
-    Track data like: artist, title, duration, genre
-    """
     id: int
     name: str
     artist: str
@@ -39,11 +37,13 @@ class Track:
     album_release_date: str
     duration: int # in ms
     valence: float # from 0 to 1
-    energy: float
+    energy: float # from 0 to 1
     tempo: float
-    loudness: float
-    danceability: float
+    loudness: float # from -60dB to 0dB
+    danceability: float # from 0 to 1
     genres: list[str]
+    playlist_id: Optional[str] = None
+
 
 
 
