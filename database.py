@@ -1,37 +1,37 @@
-import sqlite3
-
-connection = sqlite3.connect("current_user.sqlite")
-cur = connection.cursor()
-
-cur.execute(f"""
-    CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY, 
-        user_id VARCHAR(40),
-        username TEXT
-    );
-""")
-
-cur.execute(f"""
-    CREATE TABLE IF NOT EXISTS playlist (
-        id SERIAL PRIMARY KEY, 
-        playlist_id VARCHAR(40),
-        name TEXT,
-        total_songs INTEGER,
-        duration INTEGER,
-        date_created DATE    
-    );
-""")
+import asyncio
+import os
+from dotenv import load_dotenv
+import asyncpg
 
 
-cur.execute(f"""
-    CREATE TABLE IF NOT EXISTS tracks (
-        id SERIAL PRIMARY KEY, 
-        track_id VARCHAR(40),
-        name TEXT,
-        artist TEXT,
-        genre TEXT, 
-        duration INTEGER,
-        valence REAL
-    );
-""")
+load_dotenv()
+credentials = {
+    "user" : os.getenv("DB_USER", None),
+    "password" : os.getenv("DB_PASSWORD", None),
+    "db" : os.getenv("DB_NAME", None),
+    "host" : os.getenv("DB_HOST", None)
+}
 
+
+class Database:
+    async def initialize_connection(self):
+        self.pool = await asyncpg.create_pool(**credentials)
+
+        print("connected!")
+
+    async def get_track_by_id(self):
+        pass
+
+    async def insert_track(self):
+        pass
+
+    async def delete_track_by_id(self):
+        pass
+
+
+async def _main(): pass
+
+
+if __name__ == '__main__':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    asyncio.run(_main())
