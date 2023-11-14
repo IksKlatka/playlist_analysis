@@ -18,8 +18,8 @@ The goal of this project is to provide insights into user playlists by extractin
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/your-username/spotify-playlist-analysis.git
-   cd spotify-playlist-analysis
+   git clone https://github.com/IksKlatka/playlist_analysis.git
+   cd playlist_analysis
    ```
 
 2. **Install Dependencies:**
